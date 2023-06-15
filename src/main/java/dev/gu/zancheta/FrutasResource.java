@@ -1,5 +1,6 @@
 package dev.gu.zancheta;
 
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -12,19 +13,17 @@ import java.util.List;
 @Path("/frutas")
 public class FrutasResource {
 
+    @Inject
+    FrutasService frutasService;
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Fruta> list() {
-        return Fruta.listAll();
+        return frutasService.list();
     }
 
     @POST
-    @Transactional
     @Produces(MediaType.APPLICATION_JSON)
-    public void novaFruta() {
-        Fruta fruta = new Fruta();
-        fruta.nome = "Maçã";
-        fruta.qtd = 5;
-        fruta.persist();
+    public void novaFruta(InserirFrutaDTO inserirFrutaDTO) {
+        frutasService.novaFruta(inserirFrutaDTO);
     }
 }
